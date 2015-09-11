@@ -21,6 +21,9 @@ RUN apt-get -y --force-yes install vim\
  pkg-config\
  nodejs
 
+# workaround Django bug (see https://code.djangoproject.com/ticket/16017)
+ENV LANG "en_US.UTF-8"
+
 # python dependencies
 RUN pip install django==1.4\
  python-memcached==1.53\
