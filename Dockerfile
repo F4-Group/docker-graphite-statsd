@@ -32,19 +32,19 @@ RUN pip install django==1.4\
  txAMQP==0.6.2
 
 # install graphite
-RUN git clone -b 0.9.13-pre1 https://github.com/graphite-project/graphite-web.git /usr/local/src/graphite-web
+RUN git clone -b 0.9.15-1 https://github.com/F4-group/graphite-web.git /usr/local/src/graphite-web
 WORKDIR /usr/local/src/graphite-web
 RUN python ./setup.py install
 ADD scripts/local_settings.py /opt/graphite/webapp/graphite/local_settings.py
 ADD conf/graphite/ /opt/graphite/conf/
 
 # install whisper
-RUN git clone -b 0.9.13-pre1 https://github.com/graphite-project/whisper.git /usr/local/src/whisper
+RUN git clone -b 0.9.15 https://github.com/graphite-project/whisper.git /usr/local/src/whisper
 WORKDIR /usr/local/src/whisper
 RUN python ./setup.py install
 
 # install carbon
-RUN git clone -b 0.9.13-pre1 https://github.com/graphite-project/carbon.git /usr/local/src/carbon
+RUN git clone -b 0.9.15 https://github.com/graphite-project/carbon.git /usr/local/src/carbon
 WORKDIR /usr/local/src/carbon
 RUN python ./setup.py install
 
@@ -73,6 +73,10 @@ ADD daemons/carbon-aggregator.sh /etc/service/carbon-aggregator/run
 ADD daemons/graphite.sh /etc/service/graphite/run
 ADD daemons/statsd.sh /etc/service/statsd/run
 ADD daemons/nginx.sh /etc/service/nginx/run
+
+# migration scripts
+RUN mkdir -p /etc/my_init.d
+ADD scripts/migrate_db_1_4.sh /etc/my_init.d/migrate_db_1_4.sh
 
 # cleanup
 RUN apt-get clean\
