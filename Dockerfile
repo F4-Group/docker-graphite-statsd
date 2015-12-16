@@ -25,7 +25,7 @@ RUN apt-get -y --force-yes install vim\
 ENV LANG "en_US.UTF-8"
 
 # python dependencies
-RUN pip install django==1.4\
+RUN pip install django==1.5\
  python-memcached==1.53\
  django-tagging==0.3.1\
  twisted==11.1.0\
