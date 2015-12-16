@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-stampfile=/opt/graphite/storage/graphite_db_migrated_to_1.4
+stampfile=/opt/graphite/storage/graphite_db_migrated_to_0.9.14
 
 if [ ! -f $stampfile ]; then
     if [ -f /opt/graphite/storage/graphite.db ]; then

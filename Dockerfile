@@ -76,7 +76,7 @@ ADD daemons/nginx.sh /etc/service/nginx/run
 
 # migration scripts
 RUN mkdir -p /etc/my_init.d
-ADD scripts/migrate_db_1_4.sh /etc/my_init.d/migrate_db_1_4.sh
+ADD scripts/migrate_db_0.9.14.sh /etc/my_init.d/migrate_db_0.9.14.sh
 
 # cleanup
 RUN apt-get clean\
