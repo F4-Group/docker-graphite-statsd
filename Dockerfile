@@ -1,5 +1,7 @@
-FROM phusion/baseimage:0.9.15
+FROM phusion/baseimage:0.9.19
 MAINTAINER Nathan Hopkins <natehop@gmail.com>
+
+RUN add-apt-repository -y ppa:pypy/ppa
 
 #RUN echo deb http://archive.ubuntu.com/ubuntu $(lsb_release -cs) main universe > /etc/apt/sources.list.d/universe.list
 RUN apt-get -y update\
@@ -8,28 +10,36 @@ RUN apt-get -y update\
 # dependencies
 RUN apt-get -y --force-yes install vim\
  nginx\
- python-dev\
- python-flup\
- python-pip\
+ python-virtualenv\
+ pypy\
+ pypy-dev\
  expect\
  git\
  memcached\
  sqlite3\
  libcairo2\
  libcairo2-dev\
- python-cairo\
  pkg-config\
  nodejs
 
 # workaround Django bug (see https://code.djangoproject.com/ticket/16017)
 ENV LANG "en_US.UTF-8"
 
+RUN virtualenv -p /usr/bin/pypy /srv/graphite-pypy
+
+ENV VIRTUAL_ENV=/srv/graphite-pypy
+ENV PATH=/srv/graphite-pypy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ONBUILD ENV VIRTUAL_ENV=/srv/graphite-pypy
+ONBUILD ENV PATH=/srv/graphite-pypy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 # python dependencies
 RUN pip install django==1.5\
  python-memcached==1.53\
  django-tagging==0.3.1\
  twisted==11.1.0\
- txAMQP==0.6.2
+ txAMQP==0.6.2\
+ flup==1.0.2\
+ cairocffi==0.7.2
 
 # install graphite
 RUN git clone -b 0.9.15-1 --depth 1 https://github.com/F4-group/graphite-web.git /usr/local/src/graphite-web
